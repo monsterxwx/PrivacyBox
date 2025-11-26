@@ -1,0 +1,52 @@
+{
+    "unocss.include": [
+        "**/*.vue",
+        "**/*.ts",
+        "**/*.js"
+    ],
+    "unocss.exclude": [
+        "node_modules",
+        "dist",
+        "build"
+    ],
+    "unocss.languageIds": [
+        "vue",
+        "typescript",
+        "javascript"
+    ],
+    "eslint.format.enable": true,
+    "eslint.options": {
+        "extensions": [
+            ".js",
+            ".jsx",
+            ".vue",
+            ".ts",
+            ".tsx"
+        ]
+    },
+    "eslint.validate": [
+        "vue",
+        "html",
+        "javascript",
+        "typescript",
+        "javascriptreact",
+        "typescriptreact"
+    ],
+    "stylelint.enable": true,
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": "always",
+        "source.fixAll.stylelint": "always"
+    },
+    "stylelint.validate": [
+        "css",
+        "less",
+        "postcss",
+        "scss",
+        "vue",
+        "sass"
+    ],
+    "files.associations": {
+        "pages.json": "jsonc",
+        "manifest.json": "jsonc"
+    }
+}
