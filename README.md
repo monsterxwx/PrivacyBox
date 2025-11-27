@@ -38,18 +38,20 @@
 - **图片智能压缩**：基于 Canvas 算法，肉眼无损级压缩，支持批量打包。
 - **格式转换工场**：WebP / PNG / JPEG 格式互转。
 - **条形码生成器**：生成矢量条形码（Code128, EAN, UPC），支持 SVG/PNG 导出。
+- **二维码美化**：生成个性化二维码，支持自定义颜色、嵌入 Logo 图标，高清导出。
+- **极简屏幕录制**：无需安装软件，支持系统声音+麦克风混录，画中画预览，本地导出。
+...
 
 ### 💻 开发者工具
 - **JSON 格式化**：语法高亮、错误校验、压缩与美化。
-- **(Coming Soon)**：正则测试、Diff 对比...
+正则测试、Diff 对比...
 
-## 📸 预览 (Screenshots)
+还有很多内容自行预览体验
 
-*(建议你在这里放 2-3 张截图，比如首页、水印工具页、图片压缩页)*
+## 📸 预览地址
 
-| 首页仪表盘 | 水印工具 | 图片压缩 |
-|:---:|:---:|:---:|
-| ![Home](https://via.placeholder.com/300x200?text=Home+Preview) | ![Watermark](https://via.placeholder.com/300x200?text=Watermark+Preview) | ![Compress](https://via.placeholder.com/300x200?text=Compress+Preview) |
+https://monsterxwx.github.io/PrivacyBox/
+
 
 ## 🚀 快速开始 (Getting Started)
 
@@ -66,10 +68,10 @@ git clone https://github.com/your-username/privacy-box.git
 cd privacy-box
 
 # 3. 安装依赖
-npm install
+pnpm i
 
 # 4. 启动开发服务器
-npm run dev
+pnpm  dev
 ```
 
 ### 部署
@@ -77,7 +79,7 @@ npm run dev
 
 ```bash
 # 构建生产环境代码
-npm run build
+pnpm build
 ```
 构建产物位于 `dist` 目录。
 
@@ -85,7 +87,7 @@ npm run build
 
 - **框架**: [Vue 3](https://vuejs.org/) (Composition API)
 - **构建**: [Vite](https://vitejs.dev/)
-- **样式**: [Tailwind CSS](https://tailwindcss.com/)
+- **样式**: [Unocss](https://unocss.com/)
 - **核心库**:
   - `pdf-lib` / `jspdf`: PDF 生成与操作
   - `jsbarcode`: 条形码生成
@@ -102,12 +104,6 @@ npm run build
 4. 推送到分支 (`git push origin feature/AmazingFeature`)
 5. 开启一个 Pull Request
 
-## 📝 待办事项 (Roadmap)
-
-- [ ] 🌑 暗黑模式支持
-- [ ] 📱 PWA 离线安装支持
-- [ ] 🎥 视频转 GIF (FFmpeg.wasm)
-- [ ] 🔍 图片 OCR 文字识别
 
 ## 📄 开源协议 (License)
 
@@ -115,7 +111,7 @@ npm run build
 
 ---
 
-<p align="center">Made with ❤️ by <b>YourName</b></p>
+<p align="center">Made with ❤️ by <b>Monster</b></p>
 
 ---
 

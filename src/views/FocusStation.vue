@@ -474,7 +474,7 @@ watch(volume, (newVal) => {
 // ================== 番茄钟逻辑 ==================
 const timerModes = [
   { id: 'focus', label: '专注 25', minutes: 25 },
-  { id: 'short', label: '小憩 5', minutes: 0.1 },
+  { id: 'short', label: '小憩 5', minutes: 5 },
   { id: 'long', label: '长休 15', minutes: 15 }
 ]
 

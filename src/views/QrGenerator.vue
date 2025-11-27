@@ -171,8 +171,7 @@
             <!-- 画布容器 -->
             <div class="flex-1 flex items-center justify-center w-full">
               <div
-                class="relative group shadow-2xl rounded-lg overflow-hidden transition-transform duration-300 hover:scale-105 bg-white"
-                style="width: 400px; height: 400px;"
+                class="relative group shadow-2xl rounded-lg overflow-hidden transition-transform duration-300 hover:scale-105 bg-white w-full max-w-[280px] sm:max-w-[320px] md:max-w-[360px] lg:max-w-[400px] aspect-square"
               >
                 <img
                   v-if="previewUrl"
@@ -212,7 +211,7 @@
             </div>
 
             <div class="text-center mt-4 text-xs text-slate-400">
-              分辨率: 400x400px • 纯本地生成
+              导出的图片分辨率为:1000x1000px • 纯本地生成
             </div>
           </div>
         </div>

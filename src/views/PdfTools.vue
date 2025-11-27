@@ -1,5 +1,5 @@
 <template>
-  <div class="h-100% bg-slate-50 relative overflow-hidden font-sans selection:bg-red-100">
+  <div class="h-100% bg-slate-50 relative overflow-x-hidden overflow-y-auto font-sans selection:bg-red-100">
     <!-- ================= 背景特效 (红色/琥珀色主题) ================= -->
     <div class="absolute inset-0 z-0 opacity-[0.4]" style="background-image: radial-gradient(#cbd5e1 1px, transparent 1px); background-size: 32px 32px;" />
     <div class="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-red-400 rounded-full mix-blend-multiply filter blur-[128px] opacity-40 animate-blob" />

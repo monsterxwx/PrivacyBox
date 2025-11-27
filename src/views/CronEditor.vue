@@ -36,16 +36,16 @@
         <div class="lg:col-span-7 flex flex-col gap-6">
           <div class="bg-white/80 backdrop-blur-xl rounded-3xl shadow-xl border border-white/50 overflow-hidden flex flex-col min-h-[500px]">
             <!-- 顶部 Tabs -->
-            <div class="flex overflow-x-auto border-b border-slate-200 bg-white/50 p-20px">
+            <div class="flex overflow-x-auto border-b border-slate-200 bg-white/50 px-4 py-3 md:px-6 md:py-4 scrollbar-thin">
               <button
                 v-for="tab in tabs"
                 :key="tab.id"
                 @click="activeTab = tab.id"
-                class="px-6 py-4 text-sm font-bold transition-all relative whitespace-nowrap"
-                :class="activeTab === tab.id ? 'text-cyan-600' : 'text-slate-500 hover:text-slate-700 hover:bg-slate-50'"
+                class="px-4 py-3 md:px-5 md:py-3 text-xs md:text-sm font-bold transition-all relative whitespace-nowrap flex-shrink-0 hover:bg-slate-50 rounded-t-lg mx-0.5"
+                :class="activeTab === tab.id ? 'text-cyan-600 bg-white border-t-2 border-cyan-500' : 'text-slate-500 hover:text-slate-700'"
               >
                 {{ tab.label }}
-                <div v-if="activeTab === tab.id" class="absolute bottom-0 left-0 w-full h-0.5 bg-cyan-500" />
+                <div v-if="activeTab === tab.id" class="absolute bottom-0 left-0 w-full h-0.5 bg-cyan-500 md:hidden" />
               </button>
             </div>
 
@@ -75,13 +75,13 @@
                   <span class="text-slate-600">分钟执行一次</span>
                 </div>
 
-                <div v-if="state.minute.type === 'specific'" class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
-                  <div class="grid grid-cols-6 sm:grid-cols-10 gap-2">
+                <div v-if="state.minute.type === 'specific'" class="bg-white p-3 md:p-4 rounded-xl border border-slate-200 shadow-sm">
+                  <div class="grid grid-cols-6 md:grid-cols-10 gap-1.5 md:gap-2">
                     <button
                       v-for="i in 60"
                       :key="i-1"
                       @click="toggleList('minute', i-1)"
-                      class="w-8 h-8 rounded text-xs font-mono transition-colors border"
+                      class="w-7 h-7 md:w-8 md:h-8 rounded text-xs font-mono transition-colors border"
                       :class="state.minute.list.includes(i-1) ? 'bg-cyan-500 text-white border-cyan-600' : 'bg-slate-50 text-slate-500 border-slate-200 hover:border-cyan-300'"
                     >
                       {{ i-1 }}
@@ -114,13 +114,13 @@
                   <span class="text-slate-600">小时执行一次</span>
                 </div>
 
-                <div v-if="state.hour.type === 'specific'" class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
-                  <div class="grid grid-cols-6 sm:grid-cols-8 gap-2">
+                <div v-if="state.hour.type === 'specific'" class="bg-white p-3 md:p-4 rounded-xl border border-slate-200 shadow-sm">
+                  <div class="grid grid-cols-6 md:grid-cols-8 gap-1.5 md:gap-2">
                     <button
                       v-for="i in 24"
                       :key="i-1"
                       @click="toggleList('hour', i-1)"
-                      class="w-8 h-8 rounded text-xs font-mono transition-colors border"
+                      class="w-7 h-7 md:w-8 md:h-8 rounded text-xs font-mono transition-colors border"
                       :class="state.hour.list.includes(i-1) ? 'bg-cyan-500 text-white border-cyan-600' : 'bg-slate-50 text-slate-500 border-slate-200 hover:border-cyan-300'"
                     >
                       {{ i-1 }}
@@ -153,13 +153,13 @@
                   <span class="text-slate-600">天执行一次</span>
                 </div>
 
-                <div v-if="state.day.type === 'specific'" class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
-                  <div class="grid grid-cols-7 sm:grid-cols-10 gap-2">
+                <div v-if="state.day.type === 'specific'" class="bg-white p-3 md:p-4 rounded-xl border border-slate-200 shadow-sm">
+                  <div class="grid grid-cols-7 md:grid-cols-10 gap-1.5 md:gap-2">
                     <button
                       v-for="i in 31"
                       :key="i"
                       @click="toggleList('day', i)"
-                      class="w-8 h-8 rounded text-xs font-mono transition-colors border"
+                      class="w-7 h-7 md:w-8 md:h-8 rounded text-xs font-mono transition-colors border"
                       :class="state.day.list.includes(i) ? 'bg-cyan-500 text-white border-cyan-600' : 'bg-slate-50 text-slate-500 border-slate-200 hover:border-cyan-300'"
                     >
                       {{ i }}
@@ -486,6 +486,28 @@ const tabs = [
   &:focus {
     border-color: #06b6d4; /* cyan-500 */
     box-shadow: 0 0 0 1px #06b6d4; /* ring-1 ring-cyan-500 */
+  }
+}
+
+/* 自定义滚动条样式 */
+.scrollbar-thin {
+  scrollbar-width: thin;
+  -ms-overflow-style: -ms-autohiding-scrollbar;
+  &::-webkit-scrollbar {
+    height: 4px;
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    border-radius: 2px;
+    background: #cbd5e1; /* slate-300 */
+    &:hover {
+      background: #94a3b8; /* slate-400 */
+    }
+  }
+  &::-webkit-scrollbar-corner {
+    background: transparent;
   }
 }
 
