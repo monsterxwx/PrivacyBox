@@ -2,6 +2,7 @@ import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import { fileURLToPath, URL } from 'node:url'
 import UnoCSS from 'unocss/vite'
+import { setupBuild } from './build.js'
 
 export default defineConfig({
   plugins: [
@@ -12,9 +13,6 @@ export default defineConfig({
     exclude: ['@ffmpeg/ffmpeg', '@ffmpeg/util']
   },
   base: '/PrivacyBox/',
-  build: {
-    outDir: 'docs'
-  },
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
@@ -24,5 +22,6 @@ export default defineConfig({
     host: '0.0.0.0',
     open: true,
     port: 3331
-  }
+  },
+  build: setupBuild()
 })
