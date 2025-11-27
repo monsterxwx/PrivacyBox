@@ -81,12 +81,28 @@ const router = createRouter({
       path: '/password-generator',
       name: 'password-generator',
       component: () => import('@/views/PasswordGenerator.vue')
+    },
+    {
+      path: '/base64',
+      name: 'base64',
+      component: () => import('@/views/Base64Studio.vue')
+    },
+    {
+      path: '/favicon-generator',
+      name: 'favicon-generator',
+      component: () => import('@/views/FaviconGenerator.vue')
+    },
+    {
+      path: '/cron',
+      name: 'cron',
+      component: () => import('@/views/CronEditor.vue')
+    },
+    {
+      path: '/image-palette',
+      name: 'image-palette',
+      component: () => import('@/views/ImagePalette.vue')
     }
   ]
 })
-
-// router.beforeEach(async (to) => {
-//    return true
-// })
 
 export default router

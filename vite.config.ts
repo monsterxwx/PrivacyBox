@@ -9,6 +9,7 @@ export default defineConfig({
     UnoCSS()
   ],
   optimizeDeps: {
+    // 强制 Vite 不去预构建这俩库，解决 worker 加载死锁问题
     exclude: ['@ffmpeg/ffmpeg', '@ffmpeg/util']
   },
   resolve: {
