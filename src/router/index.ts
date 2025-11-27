@@ -101,6 +101,31 @@ const router = createRouter({
       path: '/image-palette',
       name: 'image-palette',
       component: () => import('@/views/ImagePalette.vue')
+    },
+    {
+      path: '/audio-converter',
+      name: 'audio-converter',
+      component: () => import('@/views/AudioConverter.vue')
+    },
+    {
+      path: '/data-converter',
+      name: 'data-converter',
+      component: () => import('@/views/DataConverter.vue')
+    },
+    {
+      path: '/svg-optimizer',
+      name: 'svg-optimizer',
+      component: () => import('@/views/SvgOptimizer.vue')
+    },
+    {
+      path: '/offline-ocr',
+      name: 'offline-ocr',
+      component: () => import('@/views/OfflineOcr.vue')
+    },
+    {
+      path: '/image-redactor',
+      name: 'image-redactor',
+      component: () => import('@/views/ImageRedactor.vue')
     }
   ]
 })

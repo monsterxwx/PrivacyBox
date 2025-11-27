@@ -1,9 +1,10 @@
 export const categories = [
   { id: 'all', label: '全部' },
-  { id: 'pdf', label: 'PDF 工具' },
+  { id: 'tools', label: '实用工具' },
+  { id: 'media', label: '多媒体处理' },
   { id: 'image', label: '图片处理' },
-  { id: 'dev', label: '开发辅助' }, // 预留
-  { id: 'life', label: '生活娱乐' } // 预留
+  { id: 'dev', label: '开发辅助' },
+  { id: 'life', label: '生活娱乐' }
 ]
 
 export const list = [
@@ -12,7 +13,7 @@ export const list = [
     desc: '合并、拆分、图片转 PDF 文件，支持批量操作。',
     icon: '📑',
     path: '/pdf-tools',
-    category: 'pdf',
+    category: 'tools',
     isNew: false
   },
   {
@@ -42,9 +43,9 @@ export const list = [
   {
     name: '条形码生成',
     desc: '在线生成 Code128, EAN, UPC 等矢量条形码，支持导出 PNG/SVG。',
-    icon: '📏', // 或者 '|||'
+    icon: '📏',
     path: '/barcode-generator',
-    category: 'image', // 或 'life' / 'store'
+    category: 'tools',
     isNew: false
   },
   {
@@ -52,7 +53,7 @@ export const list = [
     desc: '身份证/证件照安全加水印，全屏防盗，纯本地处理无上传。',
     icon: '🛡️',
     path: '/watermark',
-    category: 'image', // 或者 'life'
+    category: 'image',
     isNew: false
   },
   {
@@ -68,7 +69,7 @@ export const list = [
     desc: '生成个性化二维码，支持自定义颜色、嵌入 Logo 图标，高清导出。',
     icon: '🔳',
     path: '/qrcode',
-    category: 'image', // 或 'life'
+    category: 'tools',
     isNew: false
   },
   {
@@ -76,7 +77,7 @@ export const list = [
     desc: '无需安装软件，支持系统声音+麦克风混录，画中画预览，本地导出。',
     icon: '📹',
     path: '/screen-recorder',
-    category: 'life', // 或 'tool'
+    category: 'media',
     isNew: false
   },
   {
@@ -84,7 +85,7 @@ export const list = [
     desc: '一键查看并移除照片中的 GPS 位置、设备信息等敏感元数据。',
     icon: '📷',
     path: '/exif',
-    category: 'image', // 或 'tool'
+    category: 'image',
     isNew: false
   },
   {
@@ -92,7 +93,7 @@ export const list = [
     desc: '银行级 AES 加密。在本地给文件上锁，密码不泄露，神仙也打不开。',
     icon: '🔐',
     path: '/encrypt',
-    category: 'life', // 或 'tool'
+    category: 'tools',
     isNew: false
   },
   {
@@ -108,7 +109,7 @@ export const list = [
     desc: '硬核 FFmpeg 驱动。在线剪辑视频，调整帧率尺寸，生成高质量 GIF。',
     icon: '🎞️',
     path: '/video-gif',
-    category: 'image', // 或 'video'
+    category: 'media',
     isNew: true
   },
   {
@@ -116,7 +117,7 @@ export const list = [
     desc: '本地生成高强度随机密码，支持易读模式与强度检测，绝不联网。',
     icon: '🔑',
     path: '/password-generator',
-    category: 'dev', // 或者 'life'
+    category: 'dev',
     isNew: false
   },
   {
@@ -132,7 +133,7 @@ export const list = [
     desc: '一键生成网站全套图标 (favicon.ico, PWA)，支持预览与打包下载。',
     icon: '✨',
     path: '/favicon-generator',
-    category: 'image', // 归类为 Image 或 Design
+    category: 'image',
     isNew: false
   },
   {
@@ -148,7 +149,47 @@ export const list = [
     desc: '上传照片，AI 自动提取 8 种灵感配色。一键复制 Hex/RGB，为你的设计注入灵魂。',
     icon: '🎨',
     path: '/image-palette',
-    category: 'image', // 归类为 Image 或 Design
+    category: 'image',
+    isNew: true
+  },
+  {
+    name: '音频提取转换',
+    desc: '视频转音频，或格式互转 (MP3/AAC/WAV)。支持比特率调节，纯本地处理。',
+    icon: '🎵',
+    path: '/audio-converter',
+    category: 'media',
+    isNew: true
+  },
+  {
+    name: 'Excel/CSV 转换',
+    desc: 'Excel/CSV 互转 JSON, XML, SQL。纯前端解析，安全处理敏感报表。',
+    icon: '📊',
+    path: '/data-converter',
+    category: 'dev',
+    isNew: true
+  },
+  {
+    name: 'SVG 瘦身净化',
+    desc: '移除冗余元数据与注释，压缩代码体积。让图标更轻、更规范。',
+    icon: '🌪️',
+    path: '/svg-optimizer',
+    category: 'tools',
+    isNew: true
+  },
+  {
+    name: '本地 OCR 识别',
+    desc: '浏览器本地提取图片文字，支持中/英/日文。隐私安全，文档绝不上传。',
+    icon: '👁️',
+    path: '/offline-ocr',
+    category: 'image', // 或 'dev' / 'office'
+    isNew: true
+  },
+  {
+    name: '隐私涂抹卫士',
+    desc: '截图安全打码工具。支持高斯模糊/马赛克/纯色，内置 OCR 自动识别并抹除文字。',
+    icon: '🙈',
+    path: '/image-redactor',
+    category: 'image',
     isNew: true
   }
 ]

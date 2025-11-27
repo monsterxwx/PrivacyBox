@@ -21,14 +21,17 @@
     "jspdf": "^3.0.4",
     "jszip": "^3.10.1",
     "normalize.css": "^8.0.1",
+    "papaparse": "^5.5.3",
     "pdf-lib": "^1.17.1",
     "piexifjs": "^1.0.6",
     "pinia": "^2.3.0",
     "pinia-plugin-persistedstate": "^4.2.0",
     "qrcode": "^1.5.4",
+    "tesseract.js": "^6.0.1",
     "vue": "^3.5.22",
     "vue-echarts": "^7.0.3",
-    "vue-router": "^4.6.0"
+    "vue-router": "^4.6.0",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@iconify/vue": "^5.0.0",
