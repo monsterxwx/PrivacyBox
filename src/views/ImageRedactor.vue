@@ -407,30 +407,51 @@ const runAutoRedact = async () => {
   isProcessing.value = true
 
   try {
-    // 使用 Tesseract 识别
-    const worker = await Tesseract.createWorker('eng+chi_sim') // 中英文混合
-    const { data: { words } } = await worker.recognize(file.value)
+    // 1. 创建 Worker
+    // 建议先只用英文 'eng' 测试，中文 'chi_sim' 包较大，网络不好可能加载失败导致后续报错
+    // 如果需要中文，请确保网络环境能下载语言包，或者手动配置 corePath/langPath
+    const worker = await Tesseract.createWorker('eng+chi_sim')
 
-    // 将识别到的每个单词都作为一个区域添加
-    words.forEach(word => {
-      // 稍微扩大一点范围，确保盖住
-      const padding = 2
-      const box = word.bbox
-      regions.value.push({
-        x: box.x0 - padding,
-        y: box.y0 - padding,
-        w: (box.x1 - box.x0) + padding * 2,
-        h: (box.y1 - box.y0) + padding * 2,
-        type: currentEffect.value,
-        intensity: intensity.value
+    // 2. 执行识别
+    const result = await worker.recognize(file.value)
+
+    // Debug: 在控制台打印结果，方便查看结构
+    console.log('OCR Result:', result)
+
+    // 3. 安全获取 words (关键修改点)
+    // 使用可选链 ?. 和空数组回退 || [] 防止崩溃
+    const words = result.data?.words || []
+
+    if (words.length === 0) {
+      alert('未识别到清晰的文字区域，请尝试调整图片清晰度。')
+    } else {
+      // 4. 处理识别到的文字
+      words.forEach(word => {
+        // 过滤掉置信度太低的结果 (比如小于 60 分的噪点)
+        if (word.confidence < 60) return
+
+        const padding = 4 // 稍微加大一点覆盖范围
+        const box = word.bbox
+        regions.value.push({
+          x: box.x0 - padding,
+          y: box.y0 - padding,
+          w: (box.x1 - box.x0) + padding * 2,
+          h: (box.y1 - box.y0) + padding * 2,
+          type: currentEffect.value,
+          intensity: intensity.value
+        })
       })
-    })
 
+      // 触发重绘
+      render()
+    }
+
+    // 5. 销毁 worker 释放内存
     await worker.terminate()
-    render()
   } catch (e) {
     console.error('OCR Error:', e)
-    alert('文字识别失败，请检查网络（需要加载语言包）或图片是否清晰。')
+    // 友好的错误提示
+    alert(`识别失败: ${e.message || '请检查网络是否能访问 Github Pages (Tesseract 需要下载语言包)'}`)
   } finally {
     isProcessing.value = false
   }

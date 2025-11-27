@@ -110,7 +110,7 @@ export const list = [
     icon: '🎞️',
     path: '/video-gif',
     category: 'media',
-    isNew: true
+    isNew: false
   },
   {
     name: '强密码生成器',
@@ -150,7 +150,7 @@ export const list = [
     icon: '🎨',
     path: '/image-palette',
     category: 'image',
-    isNew: true
+    isNew: false
   },
   {
     name: '音频提取转换',
@@ -158,7 +158,7 @@ export const list = [
     icon: '🎵',
     path: '/audio-converter',
     category: 'media',
-    isNew: true
+    isNew: false
   },
   {
     name: 'Excel/CSV 转换',
@@ -166,7 +166,7 @@ export const list = [
     icon: '📊',
     path: '/data-converter',
     category: 'dev',
-    isNew: true
+    isNew: false
   },
   {
     name: 'SVG 瘦身净化',
@@ -174,7 +174,7 @@ export const list = [
     icon: '🌪️',
     path: '/svg-optimizer',
     category: 'tools',
-    isNew: true
+    isNew: false
   },
   {
     name: '本地 OCR 识别',
@@ -182,7 +182,7 @@ export const list = [
     icon: '👁️',
     path: '/offline-ocr',
     category: 'image', // 或 'dev' / 'office'
-    isNew: true
+    isNew: false
   },
   {
     name: '隐私涂抹卫士',
@@ -190,6 +190,62 @@ export const list = [
     icon: '🙈',
     path: '/image-redactor',
     category: 'image',
-    isNew: true
+    isNew: false
+  },
+  {
+    name: '批量文件重命名',
+    desc: '拒绝重复劳动。支持序列编号、正则替换、添加时间戳，一键打包下载。',
+    icon: '🏷️',
+    path: '/batch-rename',
+    category: 'tools', // 归类为实用工具
+    isNew: false
+  },
+  {
+    name: '在线提词器',
+    desc: '主播必备。全屏滚动播放脚本，支持镜像翻转、语速调节，完全离线。',
+    icon: '🎤',
+    path: '/teleprompter',
+    category: 'media',
+    isNew: false
+  },
+  {
+    name: '音频波形剪辑',
+    desc: '可视化裁剪音频，支持淡入淡出。MP3/WAV 无损导出，本地极速处理。',
+    icon: '🎵',
+    path: '/audio-trimmer',
+    category: 'media',
+    isNew: false
+  },
+  {
+    name: '专注白噪音台',
+    desc: 'Web Audio 实时合成白/粉/布朗噪音，配合番茄钟。无音频文件，离线可用。',
+    icon: '🌊',
+    path: '/focus-station',
+    category: 'life',
+    isNew: false
+  },
+  {
+    name: '文本多功能清洗机',
+    desc: '文本去重、空行清理、格式化、邮箱/URL提取、自定义分割。',
+    icon: '🧹',
+    path: '/text-chef',
+    category: 'dev', // 属于开发/办公分类
+    isNew: false
+  },
+  {
+    name: '智能证件照裁剪',
+    desc: '标准一寸/二寸/签证照模板，300DPI 打印级输出，支持自动白底。',
+    icon: '📸',
+    path: '/id-photo-cropper',
+    category: 'life', // 属于生活娱乐分类
+    isNew: false
+  },
+  {
+    name: 'LED 滚动弹幕',
+    desc: '打Call/接机/摆摊神器。支持自定义颜色、速度、闪烁特效及 LED 仿真纹理。',
+    icon: '📟',
+    path: '/led-scroller',
+    category: 'life',
+    isNew: false
   }
 ]

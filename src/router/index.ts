@@ -126,6 +126,41 @@ const router = createRouter({
       path: '/image-redactor',
       name: 'image-redactor',
       component: () => import('@/views/ImageRedactor.vue')
+    },
+    {
+      path: '/batch-rename',
+      name: 'batch-rename',
+      component: () => import('@/views/BatchRenamer.vue')
+    },
+    {
+      path: '/teleprompter',
+      name: 'teleprompter',
+      component: () => import('@/views/Teleprompter.vue')
+    },
+    {
+      path: '/audio-trimmer',
+      name: 'audio-trimmer',
+      component: () => import('@/views/AudioTrimmer.vue')
+    },
+    {
+      path: '/focus-station',
+      name: 'focus-station',
+      component: () => import('@/views/FocusStation.vue')
+    },
+    {
+      path: '/text-chef',
+      name: 'text-chef',
+      component: () => import('@/views/TextChef.vue')
+    },
+    {
+      path: '/id-photo-cropper',
+      name: 'id-photo-cropper',
+      component: () => import('@/views/IdPhotoCropper.vue')
+    },
+    {
+      path: '/led-scroller',
+      name: 'led-scroller',
+      component: () => import('@/views/LedScroller.vue')
     }
   ]
 })

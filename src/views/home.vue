@@ -158,8 +158,11 @@
 
       <!-- Footer -->
       <footer class="mt-20 text-center border-t border-slate-200/60 pt-8">
-        <p class="text-slate-500 text-sm">
-          Built with <span class="text-red-400">❤</span> by Independent Developer.
+        <p class="text-slate-500 text-sm mt-2">
+          喜欢的话欢迎
+          <a href="https://github.com/monsterxwx/PrivacyBox" target="_blank" class="text-blue-500 hover:text-blue-600 underline">
+            ⭐ Star
+          </a>
         </p>
       </footer>
     </div>
