@@ -161,6 +161,26 @@ const router = createRouter({
       path: '/led-scroller',
       name: 'led-scroller',
       component: () => import('@/views/LedScroller.vue')
+    },
+    {
+      path: '/temp-mail',
+      name: 'temp-mail',
+      component: () => import('@/views/TempMail.vue')
+    },
+    {
+      path: '/secret-send',
+      name: 'secret-send',
+      component: () => import('@/views/SecretSend.vue')
+    },
+    {
+      path: '/file-wormhole',
+      name: 'file-wormhole',
+      component: () => import('@/views/FileWormhole.vue')
+    },
+    {
+      path: '/identity-safe',
+      name: 'identity-safe',
+      component: () => import('@/views/IdentitySafe/index.vue')
     }
   ]
 })
