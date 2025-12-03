@@ -1,5 +1,6 @@
 <template>
   <div class="min-h-screen w-full relative overflow-hidden font-sans selection:bg-blue-100 bg-slate-50">
+    <AiChatButton />
     <!-- ================= 装饰背景层 (保持不变) ================= -->
     <div class="absolute inset-0 z-0 opacity-[0.4]" style="background-image: radial-gradient(#cbd5e1 1px, transparent 1px); background-size: 32px 32px;" />
     <div class="absolute top-0 left-[-10%] w-[500px] h-[500px] bg-blue-300 rounded-full mix-blend-multiply filter blur-[128px] opacity-40 animate-blob" />
@@ -173,6 +174,7 @@
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { list, categories } from './helper'
+import AiChatButton from '@/components/AiChatButton.vue'
 
 const router = useRouter()
 
