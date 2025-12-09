@@ -31,7 +31,6 @@
     "pinia": "^2.3.0",
     "pinia-plugin-persistedstate": "^4.2.0",
     "qrcode": "^1.5.4",
-    "shiki": "^3.18.0",
     "tesseract.js": "^6.0.1",
     "vue": "^3.5.22",
     "vue-echarts": "^7.0.3",
