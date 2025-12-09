@@ -13,11 +13,6 @@ const router = createRouter({
       component: () => import('@/views/home.vue')
     },
     {
-      path: '/ai-chat',
-      name: 'ai-chat',
-      component: () => import('@/views/AiChat/index.vue')
-    },
-    {
       path: '/image-convert',
       name: 'image-convert',
       component: () => import('@/views/ImageConvert.vue')
