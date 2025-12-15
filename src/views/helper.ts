@@ -254,7 +254,7 @@ export const list = [
     icon: '📧',
     path: '/temp-mail',
     category: 'tools',
-    isNew: true
+    isNew: false
   },
   {
     name: '私密瞬传',
@@ -262,7 +262,7 @@ export const list = [
     icon: '🔒',
     path: '/secret-send',
     category: 'tools',
-    isNew: true
+    isNew: false
   },
   {
     name: 'P2P 极速传送门',
@@ -270,7 +270,7 @@ export const list = [
     icon: '⚡',
     path: '/file-wormhole',
     category: 'tools',
-    isNew: true
+    isNew: false
   },
   {
     name: '虚拟身份 & 2FA',
@@ -278,6 +278,14 @@ export const list = [
     icon: '🎭',
     path: '/identity-safe',
     category: 'tools',
-    isNew: true
+    isNew: false
+  },
+  {
+    name: 'Grok 链接修复',
+    desc: '自动提取混乱文本中的 UUID，生成可跳转的 Grok 生成的视频标准链接。',
+    icon: '🔗',
+    path: '/grok-parser', // 记得在路由中注册这个路径
+    category: 'life',
+    isNew: false
   }
 ]

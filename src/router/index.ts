@@ -181,6 +181,11 @@ const router = createRouter({
       path: '/identity-safe',
       name: 'identity-safe',
       component: () => import('@/views/IdentitySafe/index.vue')
+    },
+    {
+      path: '/grok-parser',
+      name: 'grok-parser',
+      component: () => import('@/views/GrokParser.vue')
     }
   ]
 })
