@@ -185,9 +185,23 @@ const router = createRouter({
     {
       path: '/grok-parser',
       name: 'grok-parser',
-      component: () => import('@/views/GrokParser.vue')
+      component: () => import('@/views/GrokParser.vue'),
+      meta: {
+        title: 'Grok 链接修复'
+      }
     }
   ]
+})
+
+router.beforeEach((to, from, next) => {
+  // 设置页面标题
+  if (to.meta?.title) {
+    document.title = to.meta.title as string
+  } else {
+    // 默认标题
+    document.title = 'PrivacyBox 工具箱'
+  }
+  next()
 })
 
 export default router

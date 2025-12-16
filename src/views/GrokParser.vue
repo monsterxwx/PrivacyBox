@@ -211,18 +211,51 @@ watch(inputText, () => {
 const resultUrl = computed(() => {
   if (!inputText.value) return ''
 
-  // 1. 正则匹配 UUID (例如: 917ad264-4c0e-40ac-b600-850e9d225ce2)
-  // 不区分大小写
-  const uuidRegex = /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/i
-  const match = inputText.value.match(uuidRegex)
+  // 1. 第一步：核弹级清洗
+  // 移除所有非 16 进制字符 (只保留 0-9, a-f, A-F)
+  // 此时 "8a啊3ae7bc..." 会变成 "8a3ae7bc..."
+  const rawHex = inputText.value.replace(/[^0-9a-fA-F]/g, '').toLowerCase()
 
-  if (match) {
-    const uuid = match[0]
-    // 2. 强制拼接标准前缀和后缀，不管输入里原来的参数有多乱
-    const baseUrl = 'https://grok.com/imagine/post/'
-    const queryParams = '?source=copy_link&platform=android'
+  // 如果连32位都不够，肯定不是有效 UUID
+  if (rawHex.length < 32) return ''
 
-    return `${baseUrl}${uuid}${queryParams}`
+  // 2. 第二步：滑动窗口特征扫描
+  // 也就是在乱码堆里找 "长得像 UUID v4" 的那一段
+  let validUuid = ''
+
+  // 遍历所有可能的 32 位片段
+  for (let i = 0; i <= rawHex.length - 32; i++) {
+    const segment = rawHex.substr(i, 32)
+
+    // UUID v4 的特征校验：
+    // 第 13 位 (index 12) 必须是 '4' (例如: ...-4xxx-...)
+    // 第 17 位 (index 16) 必须是 '8', '9', 'a', 或 'b' (例如: ...-axxx-...)
+    // 注意：Grok 目前生成的都是 v4 UUID，这个特征非常稳健
+    const char12 = segment[12]
+    const char16 = segment[16]
+
+    if (char12 === '4' && ['8', '9', 'a', 'b'].includes(char16)) {
+      validUuid = segment
+      break // 找到了就停止，防止后面还有干扰
+    }
+  }
+
+  // 兜底方案：如果没找到标准 v4 特征，但刚才清洗后的长度刚好或很长，
+  // 可能是其他版本的 UUID，直接取前 32 位试一试
+  if (!validUuid && rawHex.length >= 32) {
+    validUuid = rawHex.substr(0, 32)
+  }
+
+  if (validUuid) {
+    // 3. 重新格式化为 8-4-4-4-12
+    const p1 = validUuid.substr(0, 8)
+    const p2 = validUuid.substr(8, 4)
+    const p3 = validUuid.substr(12, 4)
+    const p4 = validUuid.substr(16, 4)
+    const p5 = validUuid.substr(20, 12)
+
+    const cleanUuid = `${p1}-${p2}-${p3}-${p4}-${p5}`
+    return `https://grok.com/imagine/post/${cleanUuid}?source=copy_link&platform=android`
   }
 
   return ''
