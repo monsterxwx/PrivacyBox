@@ -189,6 +189,14 @@ const router = createRouter({
       meta: {
         title: 'Grok 链接修复'
       }
+    },
+    {
+      path: '/belly-fatKiller',
+      name: 'belly-fatKiller',
+      component: () => import('@/views/BellyFatKiller.vue'),
+      meta: {
+        title: '健身计划'
+      }
     }
   ]
 })

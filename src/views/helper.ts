@@ -287,5 +287,13 @@ export const list = [
     path: '/grok-parser', // 记得在路由中注册这个路径
     category: 'life',
     isNew: false
+  },
+  {
+    name: '健身',
+    desc: '健身计划、运动记录、运动数据分析。',
+    icon: '🏋️‍♂️',
+    path: '/belly-fatKiller',
+    category: 'life',
+    isNew: false
   }
 ]
