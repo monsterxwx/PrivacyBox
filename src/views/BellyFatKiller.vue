@@ -1,7 +1,7 @@
 <template>
   <div class="min-h-screen bg-gray-50 pb-24 font-sans text-gray-700 select-none">
     <!-- 顶部状态栏 -->
-    <header class="bg-gradient-to-br from-blue-600 to-indigo-700 text-white p-6 rounded-b-3xl shadow-xl relative overflow-hidden">
+    <header v-if="activeTab === 'history'" class="bg-gradient-to-br from-blue-600 to-indigo-700 text-white p-6 rounded-b-3xl shadow-xl relative overflow-hidden">
       <div class="relative z-10">
         <div class="flex justify-between items-start mb-6">
           <div>
