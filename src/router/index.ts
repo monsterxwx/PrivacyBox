@@ -197,6 +197,14 @@ const router = createRouter({
       meta: {
         title: '健身计划'
       }
+    },
+    {
+      path: '/svg-animation',
+      name: 'svg-animation',
+      component: () => import('@/views/SvgAnimation.vue'),
+      meta: {
+        title: 'SVG动画生成器'
+      }
     }
   ]
 })

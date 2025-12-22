@@ -295,5 +295,13 @@ export const list = [
     path: '/belly-fatKiller',
     category: 'life',
     isNew: false
+  },
+  {
+    name: 'SVG动画生成器',
+    desc: '用于生成SVG的动画。',
+    icon: '💫',
+    path: '/svg-animation',
+    category: 'tools',
+    isNew: false
   }
 ]
