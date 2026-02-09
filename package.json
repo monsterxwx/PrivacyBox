@@ -11,6 +11,7 @@
   "dependencies": {
     "@ffmpeg/ffmpeg": "^0.12.15",
     "@ffmpeg/util": "^0.12.2",
+    "@vercel/analytics": "^1.6.1",
     "colorthief": "^2.6.0",
     "cropperjs": "^1.6.2",
     "crypto-js": "^4.2.0",

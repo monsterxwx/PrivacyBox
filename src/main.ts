@@ -5,6 +5,9 @@ import 'normalize.css'
 import { setupPlugins } from './plugins'
 import 'virtual:uno.css'
 import './style/index.scss'
+import { inject } from '@vercel/analytics'
+
+inject()
 
 const app = createApp(App)
 
