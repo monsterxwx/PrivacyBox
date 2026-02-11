@@ -4,25 +4,46 @@
     <div class="absolute inset-0 z-0 opacity-[0.4]" style="background-image: radial-gradient(#cbd5e1 1px, transparent 1px); background-size: 32px 32px;" />
     <div class="absolute top-0 right-[-10%] w-[500px] h-[500px] bg-purple-300 rounded-full mix-blend-multiply filter blur-[128px] opacity-40 animate-blob" />
     <div class="absolute bottom-[-10%] left-[-10%] w-[500px] h-[500px] bg-pink-300 rounded-full mix-blend-multiply filter blur-[128px] opacity-40 animate-blob animation-delay-2000" />
-
+    <!-- GitHub Star Button -->
+    <a
+      href="https://github.com/monsterxwx/PrivacyBox"
+      target="_blank"
+      class="fixed top-6 right-6 z-50 flex items-center gap-2 px-4 py-2 bg-white/80 backdrop-blur-sm rounded-full border border-gray-200 shadow-md hover:shadow-lg transition-all duration-300 hover:bg-white"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="text-gray-700"
+      >
+        <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />
+      </svg>
+      <span class="text-sm font-medium text-gray-700">Star</span>
+    </a>
     <!-- ================= 内容区域 ================= -->
     <div class="relative z-10 max-w-5xl mx-auto px-6 py-12">
+      <RouterLink to="/" class="text-sm font-medium text-slate-500 hover:text-purple-600 mb-4 inline-flex items-center gap-1 transition-colors">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        ><path d="m15 18-6-6 6-6" /></svg>
+        返回首页
+      </RouterLink>
       <!-- 头部 -->
       <div class="flex flex-col items-center mb-10 text-center">
-        <RouterLink to="/" class="text-sm font-medium text-slate-500 hover:text-purple-600 mb-4 inline-flex items-center gap-1 transition-colors">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          ><path d="m15 18-6-6 6-6" /></svg>
-          返回首页
-        </RouterLink>
         <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 mb-3">
           <span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-pink-600">Grok 链接修复</span>
         </h1>
@@ -137,8 +158,10 @@
           </div>
         </div>
 
-        <!-- 右侧：说明区 (占 4 列) -->
+        <!-- 右侧：说明区和历史记录 (占 4 列) -->
         <div class="lg:col-span-4 space-y-6">
+          <!-- 历史记录组件 -->
+          <HistoryManager ref="historyManagerRef" :new-link="resultUrl" @link-added="handleLinkAdded" />
           <div class="bg-white/80 backdrop-blur-xl rounded-3xl shadow-xl border border-white/50 p-6 sticky top-8">
             <h2 class="text-lg font-bold text-slate-800 mb-6 flex items-center gap-2">
               <span class="w-1 h-6 bg-purple-500 rounded-full" />
@@ -198,9 +221,11 @@
 
 <script setup>
 import { ref, computed, watch } from 'vue'
+import HistoryManager from '@/components/HistoryManager.vue'
 
 const inputText = ref('')
 const copied = ref(false)
+const historyManagerRef = ref(null)
 
 // 监听输入，重置复制状态
 watch(inputText, () => {
@@ -275,9 +300,18 @@ const copyResult = async () => {
   }
 }
 
+// 处理链接添加事件
+const handleLinkAdded = (link) => {
+  console.log('Link added to history:', link)
+}
+
 // 跳转功能
 const openUrl = () => {
   if (resultUrl.value) {
+    // 将链接添加到历史记录
+    if (historyManagerRef.value) {
+      historyManagerRef.value.addLink(resultUrl.value)
+    }
     window.open(resultUrl.value, '_blank')
   }
 }
