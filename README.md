@@ -26,6 +26,15 @@
 - 🎨 **现代设计**：采用流光背景 + 磨砂玻璃 (Glassmorphism) 的 UI 设计语言。
 - 📦 **纯前端架构**：无需后端数据库，部署简单（支持 GitHub Pages / Vercel）。
 
+## 捐赠本项目
+
+如果本项目对你有帮助，欢迎捐赠支持。你的捐赠将帮助我继续完善和维护这个项目。捐赠无门槛，1块钱也是爱。
+
+### 扫码捐赠
+
+<img src="public/juanzhen.jpg" alt="捐赠二维码" width="200" />
+
+
 ## 🛠️ 功能列表 (Tools)
 
 ### 📄 PDF 工具箱
@@ -114,4 +123,3 @@ pnpm build
 <p align="center">Made with ❤️ by <b>Monster</b></p>
 
 ---
-
