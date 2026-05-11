@@ -205,6 +205,14 @@ const router = createRouter({
       meta: {
         title: 'SVG动画生成器'
       }
+    },
+    {
+      path: '/roco-tool',
+      name: 'roco-tool',
+      component: () => import('@/views/RocoTool.vue'),
+      meta: {
+        title: '洛克王国PVP代码转换器'
+      }
     }
   ]
 })

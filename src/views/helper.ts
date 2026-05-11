@@ -303,5 +303,13 @@ export const list = [
     path: '/svg-animation',
     category: 'tools',
     isNew: false
+  },
+  {
+    name: '洛克王国PVP代码转换器',
+    desc: '用于将代码转成对应的映射信息',
+    icon: '🎮',
+    path: '/roco-tool',
+    category: 'life',
+    isNew: false
   }
 ]
