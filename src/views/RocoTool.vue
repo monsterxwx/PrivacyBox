@@ -105,7 +105,38 @@ const localDataInput = ref('')
 const generatedCode = ref('')
 const fileInput = ref(null)
 
-const NATURE_MAP = { 胆小: 'V', 大胆: 'b', 开朗: 'X', 固执: 'C', 淘气: 'a', 悠闲: 'a', 保守: 'L' }
+const NATURE_MAP = {
+  勇敢: 'E',
+  逞强: 'F',
+  开朗: 'V',
+  胆小: 'X',
+  固执: 'C',
+  大胆: 'B',
+  调皮: 'D',
+  聪明: 'L',
+  专注: 'M',
+  偏执: 'N',
+  冷静: 'O',
+  理性: 'P',
+  天真: 'H',
+  懒散: 'I',
+  悠闲: 'J',
+  稳重: 'G',
+  坦率: 'K',
+  警惕: 'Q',
+  害羞: 'S',
+  温顺: 'R',
+  慎重: 'T',
+  焦虑: 'U',
+  急躁: 'W',
+  莽撞: 'Y',
+  热情: 'Z',
+  沉默: 'a',
+  忧郁: 'b',
+  平和: 'c',
+  粗心: 'd',
+  踏实: 'e'
+}
 const EV_MAP = { 生命: 'BP', 物攻: 'BQ', 魔攻: 'BR', 物防: 'BS', 魔防: 'BT', 速度: 'BU' }
 
 const fullDictionary = computed(() => ({
