@@ -108,8 +108,8 @@ const fileInput = ref(null)
 const NATURE_MAP = {
   勇敢: 'E',
   逞强: 'F',
-  开朗: 'V',
-  胆小: 'X',
+  开朗: 'X',
+  胆小: 'V',
   固执: 'C',
   大胆: 'B',
   调皮: 'D',
