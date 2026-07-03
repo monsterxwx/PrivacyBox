@@ -272,7 +272,6 @@ const showAlert = (msg) => {
   setTimeout(() => { alertMsg.value = '' }, 3000)
 }
 
-// =============== 导出 / 导入 JSON 文件 ===============
 const exportJsonFile = () => {
   const dataStr = JSON.stringify(fullDictionary.value, null, 2)
   const blob = new Blob([dataStr], { type: 'application/json' })
