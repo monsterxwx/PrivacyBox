@@ -263,7 +263,15 @@ const parseData = () => {
     const s3Code = codes[petBaseIndex + 7] === 'none' ? '' : (codes[petBaseIndex + 7] || '')
     const s4Code = codes[petBaseIndex + 8] === 'none' ? '' : (codes[petBaseIndex + 8] || '')
 
-    if (petNames[i]) dictionary.value.pets[petCode] = petNames[i]
+    if (petNames[i]) {
+      // 避免用不带括号的简写覆盖字典里已有的带括号的完整形态名
+      const existing = dictionary.value.pets[petCode]
+      if (existing && existing.includes('（') && !petNames[i].includes('（')) {
+        // 保留原有的具体形态名
+      } else {
+        dictionary.value.pets[petCode] = petNames[i]
+      }
+    }
 
     if (bloodlineNames[i] && bloodCode && bloodCode !== 'none') {
       dictionary.value.bloodline[bloodCode] = bloodlineNames[i]
@@ -291,7 +299,11 @@ const generateCode = () => {
     const bloodlineToId = Object.fromEntries(Object.entries(dict.bloodline).map(([k, v]) => [v, k]))
 
     const getSkillSafe = (code) => (!code || code === '???' || code === '????') ? '00000' : code + '~'
-    const validPets = team.pets.filter(p => !!petNameToId[p.pet.name.replace(/（.*?）|\(.*?\)/g, '').trim()])
+    const validPets = team.pets.filter(p => {
+      const rawName = p.pet?.name || ''
+      const cleanName = rawName.replace(/（.*?）|\(.*?\)/g, '').trim()
+      return !!petNameToId[rawName] || !!petNameToId[cleanName]
+    })
     if (validPets.length === 0) return alert('图鉴缺失')
 
     let textOutput = `### ${team.name}\n# 魔法：${team.power}\n#\n`
@@ -307,7 +319,9 @@ const generateCode = () => {
       }
       textOutput += `# ${petItem.pet.name}：${parsedBloodline || '默认血脉'}、{${skills.join('、')}}\n`
 
-      let petCode = petNameToId[petItem.pet.name.replace(/（.*?）|\(.*?\)/g, '').trim()]
+      const rawName = petItem.pet?.name || ''
+      const cleanName = rawName.replace(/（.*?）|\(.*?\)/g, '').trim()
+      let petCode = petNameToId[rawName] || petNameToId[cleanName]
       if (index === 0) petCode = teamSizeLetter + petCode
 
       const evsArray = petItem.evs.split(/\s+/).filter(Boolean)
