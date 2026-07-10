@@ -1,15 +1,6 @@
 <template>
   <div class="bg-gray-100 min-h-screen text-gray-800 font-sans p-6">
     <div class="max-w-7xl mx-auto flex flex-col gap-6">
-      <header class="bg-white p-6 rounded-xl shadow-sm">
-        <h1 class="text-2xl font-bold text-gray-900 m-0">
-          洛克王国世界：开发测试工具箱 <span class="text-indigo-600">V6.2 终极修复版</span>
-        </h1>
-        <p class="text-gray-500 mt-2 text-sm">
-          已彻底修复解析器步长错位 Bug，精准对齐 9 分段底层结构。包含 00000 压缩法则与 JSON 跨设备导入导出功能。
-        </p>
-      </header>
-
       <main class="flex flex-col md:flex-row gap-6 items-start">
         <section class="w-full md:w-1/2 flex flex-col gap-4 bg-white p-6 rounded-xl shadow-sm sticky top-6">
           <div class="flex justify-between items-center">
@@ -84,27 +75,6 @@
                 spellcheck="false"
               />
               <pre v-else class="text-green-400 font-mono text-sm m-0">{{ JSON.stringify(fullDictionary, null, 2) }}</pre>
-            </div>
-          </div>
-
-          <div class="flex flex-col gap-4 bg-white p-6 rounded-xl shadow-sm border-2 border-dashed border-indigo-100">
-            <div class="flex flex-col gap-1">
-              <h2 class="text-lg font-semibold text-indigo-900">
-                3. 测试生成游戏阵容代码
-              </h2>
-            </div>
-            <textarea v-model="localDataInput" class="w-full border-2 border-gray-200 rounded-lg p-3 h-32 resize-none focus:outline-none focus:border-indigo-500 font-mono text-xs transition-colors custom-scrollbar" placeholder="粘贴小程序 JSON..." />
-            <button @click="generateCode" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors cursor-pointer border-none shadow-sm">
-              ↓ 生成代码 ↓
-            </button>
-            <div v-if="generatedCode" class="mt-2 flex flex-col gap-2 p-4 bg-indigo-50 rounded-lg">
-              <div class="flex justify-between items-center">
-                <span class="text-sm font-bold text-indigo-800">生成结果：</span>
-                <button @click="copyGenerated" class="bg-white hover:bg-gray-50 text-indigo-600 border border-indigo-200 px-3 py-1 rounded text-xs cursor-pointer shadow-sm transition-colors">
-                  一键复制
-                </button>
-              </div>
-              <textarea readonly :value="generatedCode" class="w-full bg-white border border-indigo-100 rounded-md p-3 h-48 text-xs font-mono text-gray-700 resize-none outline-none custom-scrollbar" />
             </div>
           </div>
         </section>
@@ -182,8 +152,6 @@ const inputText = ref('')
 const alertMsg = ref('')
 const parsedResult = ref('')
 const dictionary = ref({ pets: {}, skills: {}, magic: {}, bloodline: {} })
-const localDataInput = ref('')
-const generatedCode = ref('')
 const fileInput = ref(null)
 
 const isEditingJson = ref(false)
@@ -261,11 +229,9 @@ onMounted(() => {
   if (savedDict) {
     try { dictionary.value = JSON.parse(savedDict) } catch (e) { console.error(e) }
   }
-  localDataInput.value = localStorage.getItem('roco_local_test') || ''
 })
 
 watch(dictionary, (newVal) => localStorage.setItem('roco_dict_v6', JSON.stringify(newVal)), { deep: true })
-watch(localDataInput, (newVal) => localStorage.setItem('roco_local_test', newVal))
 
 const showAlert = (msg) => {
   alertMsg.value = msg
@@ -464,57 +430,9 @@ const parseData = async () => {
   showAlert('解析成功！已合并至本地字典。')
 }
 
-// =============== 核心功能：测试生成游戏代码 ===============
-const generateCode = () => {
-  try {
-    const localDataArray = JSON.parse(localDataInput.value)
-    const team = localDataArray[0]
-    const dict = fullDictionary.value
-    const petNameToId = Object.fromEntries(Object.entries(dict.pets).map(([k, v]) => [v, k]))
-    const skillNameToId = Object.fromEntries(Object.entries(dict.skills).map(([k, v]) => [v, k]))
-    const magicNameToId = Object.fromEntries(Object.entries(dict.magic).map(([k, v]) => [v, k]))
-    const bloodlineToId = Object.fromEntries(Object.entries(dict.bloodline).map(([k, v]) => [v, k]))
-
-    const getSkillSafe = (code) => (!code || code === '???' || code === '????') ? '00000' : code + '~'
-    const validPets = team.pets.filter(p => {
-      const rawName = p.pet?.name || ''
-      const cleanName = rawName.replace(/（.*?）|\(.*?\)/g, '').trim()
-      return !!petNameToId[rawName] || !!petNameToId[cleanName]
-    })
-    if (validPets.length === 0) return alert('图鉴缺失')
-
-    let textOutput = `### ${team.name}\n# 魔法：${team.power}\n#\n`
-    let payloadStr = 'B~'
-    const teamSizeLetter = String.fromCharCode(65 + validPets.length)
-
-    validPets.forEach((petItem, index) => {
-      const skills = petItem.skills || []
-      let parsedBloodline = ''
-      if (petItem.pet?.attributes?.length > 0) {
-        const lastAttr = petItem.pet.attributes[petItem.pet.attributes.length - 1]
-        parsedBloodline = (lastAttr === '首领' || lastAttr === '奇异') ? lastAttr + '血脉' : (lastAttr.endsWith('血脉') ? lastAttr : lastAttr + '系血脉')
-      }
-      textOutput += `# ${petItem.pet.name}：${parsedBloodline || '默认血脉'}、{${skills.join('、')}}\n`
-
-      const rawName = petItem.pet?.name || ''
-      const cleanName = rawName.replace(/（.*?）|\(.*?\)/g, '').trim()
-      let petCode = petNameToId[rawName] || petNameToId[cleanName]
-      if (index === 0) petCode = teamSizeLetter + petCode
-
-      const evsArray = petItem.evs.split(/\s+/).filter(Boolean)
-      const evsCode = (EV_MAP[evsArray[0]] || 'BP') + (EV_MAP[evsArray[1]] || 'BR') + (EV_MAP[evsArray[2]] || 'BU')
-
-      payloadStr += `${petCode}~~~${bloodlineToId[parsedBloodline] || 'T'}~${NATURE_MAP[petItem.nature] || 'V'}~${evsCode}`
-      payloadStr += getSkillSafe(skillNameToId[skills[0]]) + getSkillSafe(skillNameToId[skills[1]]) + getSkillSafe(skillNameToId[skills[2]]) + getSkillSafe(skillNameToId[skills[3]])
-    })
-
-    generatedCode.value = textOutput + '#\n' + (magicNameToId[team.power] || 'ZZH') + '~FA~' + 'A~'.repeat(validPets.length * 2 - 1)
-  } catch (e) { alert('生成失败') }
-}
 
 const clearDict = () => { if (confirm('确定清空？')) { dictionary.value = { pets: {}, skills: {}, magic: {}, bloodline: {} }; showAlert('已清空') } }
 const copyJson = async () => { try { await navigator.clipboard.writeText(JSON.stringify(fullDictionary.value, null, 2)); showAlert('全量字典已复制！') } catch (err) { alert('失败') } }
-const copyGenerated = async () => { try { await navigator.clipboard.writeText(generatedCode.value); alert('成功') } catch (err) { alert('失败') } }
 </script>
 
 <style scoped>
