@@ -16,11 +16,43 @@
             class="w-full border-2 border-gray-200 rounded-lg p-4 h-64 resize-none focus:outline-none focus:border-blue-500 font-mono text-sm transition-colors"
             placeholder="请在此粘贴带有 # 号注释的官方阵容复制串，或纯阵容码..."
           />
-          <div v-if="parsedResult" class="bg-gray-50 border border-gray-200 rounded-lg p-4 text-sm font-mono whitespace-pre-wrap text-gray-700 custom-scrollbar overflow-auto max-h-48">
-            <div class="font-bold text-gray-900 mb-2">
-              解析结果预览：
+          <div v-if="parsedResultList && parsedResultList.length" class="flex flex-col gap-3 bg-gray-50 border border-gray-200 rounded-xl p-4 custom-scrollbar overflow-auto max-h-96">
+            <div class="font-bold text-gray-900 text-sm flex items-center justify-between border-b border-gray-250 pb-2">
+              <span>解析结果预览：</span>
+              <span class="text-xs font-normal text-gray-500 font-sans">共 {{ parsedResultList.length }} 个席位</span>
             </div>
-            {{ parsedResult }}
+            
+            <div class="flex flex-col gap-2.5">
+              <div
+                v-for="p in parsedResultList"
+                :key="p.index"
+                class="bg-white border border-gray-200 rounded-lg p-3 text-xs flex flex-col gap-2 shadow-sm"
+              >
+                <!-- 第一行：座位 & 精灵 -->
+                <div class="flex justify-between items-center">
+                  <span class="font-bold text-gray-800 text-sm">
+                    [座位 {{ p.index }}] {{ p.petName }}
+                  </span>
+                  <span v-if="p.petCode" class="text-[10px] text-gray-400 font-mono">编码: {{ p.petCode }}</span>
+                </div>
+
+                <!-- 第二行：技能 -->
+                <div class="flex flex-wrap gap-1.5 items-center">
+                  <span class="text-[10px] font-bold text-gray-400">技能:</span>
+                  <template v-for="(sk, sIdx) in p.skills">
+                    <span
+                      v-if="sk.name !== '--'"
+                      :key="sIdx"
+                      class="px-2 py-1 rounded text-[10px] font-sans border"
+                      :class="sk.isKnown ? 'bg-green-50 text-green-700 border-green-200 font-medium' : 'bg-red-50 text-red-600 border-red-200'"
+                    >
+                      {{ sk.name }}
+                    </span>
+                  </template>
+                  <span v-if="!p.skills.some(sk => sk.name !== '--')" class="text-gray-400 italic">无技能</span>
+                </div>
+              </div>
+            </div>
           </div>
           <div v-if="alertMsg" class="bg-green-100 text-green-700 px-4 py-2 rounded-lg text-sm font-medium text-center">
             {{ alertMsg }}
@@ -83,11 +115,15 @@
 
     <!-- 自定义输入弹窗 -->
     <div v-if="showPromptModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
-      <div class="bg-white rounded-2xl p-6 w-[450px] shadow-2xl transform transition-all">
+      <div class="bg-white rounded-2xl p-6 w-[500px] shadow-2xl transform transition-all">
         <h3 class="text-lg font-bold text-gray-900 mb-2">
-          发现未知精灵
+          {{ promptModalData.type === 'skill' ? '发现未知技能' : '发现未知精灵' }}
         </h3>
-        <p class="text-sm text-gray-500 mb-3">
+        <p class="text-sm text-gray-500 mb-3" v-if="promptModalData.type === 'skill'">
+          系统检测到 <span class="font-semibold text-gray-700">#{{ promptModalData.seatIndex }} {{ promptModalData.petName }}</span> 的新技能编码 <span class="font-bold text-indigo-600 bg-indigo-50 px-2 py-1 rounded">{{ promptModalData.code }}</span> (技能栏{{ promptModalData.skillSlot }})
+          <br>请输入它的对应名称以加入字典：
+        </p>
+        <p class="text-sm text-gray-500 mb-3" v-else>
           系统检测到新精灵编码 <span class="font-bold text-indigo-600 bg-indigo-50 px-2 py-1 rounded">{{ promptModalData.code }}</span>
           <br>请输入它的对应名称以加入字典：
         </p>
@@ -109,17 +145,51 @@
             /></svg>
             当前阵容参考 (便于使用排除法)
           </div>
-          <div class="grid grid-cols-2 gap-2">
+          
+          <div class="flex flex-col gap-2 max-h-60 overflow-y-auto custom-scrollbar pr-1">
             <div
               v-for="p in promptModalData.teamPreview"
               :key="p.index"
-              class="flex items-center justify-between px-2 py-1.5 rounded text-xs border"
-              :class="p.code === promptModalData.code
-                ? 'bg-indigo-50 border-indigo-300 text-indigo-700 font-bold ring-1 ring-indigo-200'
-                : (p.name ? 'bg-white border-gray-200 text-gray-700' : 'bg-red-50 border-red-200 text-red-600')"
+              class="p-2.5 rounded-lg border text-xs flex flex-col gap-1.5 transition-colors"
+              :class="
+                (promptModalData.type === 'pet' && p.code === promptModalData.code) || 
+                (promptModalData.type === 'skill' && p.index === promptModalData.seatIndex)
+                  ? 'bg-indigo-50/70 border-indigo-300 ring-1 ring-indigo-200'
+                  : 'bg-white border-gray-200'
+              "
             >
-              <span class="opacity-50">#{{ p.index }}</span>
-              <span class="truncate ml-2" :title="p.name || p.code">{{ p.name || '??? (未知)' }}</span>
+              <!-- 第一行：座位号 & 精灵名/编码 -->
+              <div class="flex justify-between items-center">
+                <span class="font-bold" :class="
+                  (promptModalData.type === 'pet' && p.code === promptModalData.code) || 
+                  (promptModalData.type === 'skill' && p.index === promptModalData.seatIndex)
+                    ? 'text-indigo-700'
+                    : 'text-gray-700'
+                ">
+                  [座位 {{ p.index }}] {{ getPetDisplayName(p.code) || '??? (未知精灵)' }}
+                </span>
+                <span class="text-[10px] text-gray-400 font-mono">编码: {{ p.code }}</span>
+              </div>
+
+              <!-- 第二行：技能列表 -->
+              <div class="flex flex-wrap gap-1 items-center text-gray-600 bg-gray-50/50 p-1.5 rounded border border-dashed border-gray-100">
+                <span class="text-[10px] font-medium text-gray-400">技能:</span>
+                <template v-for="(sk, sIdx) in p.skills">
+                  <span 
+                    v-if="sk.code"
+                    :key="sIdx"
+                    class="px-1.5 py-0.5 rounded text-[10px] font-mono transition-colors"
+                    :class="
+                      promptModalData.type === 'skill' && p.index === promptModalData.seatIndex && promptModalData.code === sk.code
+                        ? 'bg-indigo-600 text-white font-bold'
+                        : (getSkillDisplayName(sk.code, sk.commentName) ? 'bg-green-50 text-green-700 border border-green-200' : 'bg-red-50 text-red-600 border border-red-200')
+                    "
+                  >
+                    {{ getSkillDisplayName(sk.code, sk.commentName) || `未知(${sk.code})` }}
+                  </span>
+                </template>
+                <span v-if="!p.skills.some(sk => sk.code)" class="text-gray-400 italic text-[10px]">无技能</span>
+              </div>
             </div>
           </div>
         </div>
@@ -130,7 +200,7 @@
           type="text"
           autofocus
           class="w-full border-2 border-gray-200 rounded-lg p-3 mb-6 focus:outline-none focus:border-indigo-500 transition-colors"
-          placeholder="例如：迪莫 (留空则不添加)"
+          :placeholder="promptModalData.type === 'skill' ? '例如：烈焰焦土 (留空则不添加)' : '例如：迪莫 (留空则不添加)'"
         >
         <div class="flex justify-end gap-3">
           <button @click="cancelPrompt" class="px-4 py-2 rounded-lg text-sm font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 transition-colors cursor-pointer border-none">
@@ -150,7 +220,7 @@ import { ref, watch, onMounted, computed } from 'vue'
 
 const inputText = ref('')
 const alertMsg = ref('')
-const parsedResult = ref('')
+const parsedResultList = ref([])
 const dictionary = ref({ pets: {}, skills: {}, magic: {}, bloodline: {} })
 const fileInput = ref(null)
 
@@ -158,11 +228,27 @@ const isEditingJson = ref(false)
 const editingJsonText = ref('')
 
 const showPromptModal = ref(false)
-const promptModalData = ref({ code: '', resolve: null, userInput: '', teamPreview: [] })
+const promptModalData = ref({ type: '', code: '', resolve: null, userInput: '', teamPreview: [], petName: '', seatIndex: 0, skillSlot: 0 })
 
 const promptForPetName = (code, teamPreview) => {
   return new Promise((resolve) => {
-    promptModalData.value = { code, resolve, userInput: '', teamPreview }
+    promptModalData.value = { type: 'pet', code, resolve, userInput: '', teamPreview }
+    showPromptModal.value = true
+  })
+}
+
+const promptForSkillName = (code, petName, seatIndex, skillSlot, teamPreview) => {
+  return new Promise((resolve) => {
+    promptModalData.value = {
+      type: 'skill',
+      code,
+      petName,
+      seatIndex,
+      skillSlot,
+      resolve,
+      userInput: '',
+      teamPreview
+    }
     showPromptModal.value = true
   })
 }
@@ -179,6 +265,15 @@ const cancelPrompt = () => {
     promptModalData.value.resolve(null)
   }
   showPromptModal.value = false
+}
+
+const getPetDisplayName = (code) => {
+  return dictionary.value.pets[code] || ''
+}
+const getSkillDisplayName = (code, commentName) => {
+  if (commentName) return commentName
+  if (!code) return ''
+  return dictionary.value.skills[code] || ''
 }
 
 const NATURE_MAP = {
@@ -313,7 +408,7 @@ const parseData = async () => {
   const lines = inputText.value.trim().split('\n')
   let magicName = ''; let payloadStr = ''
   const petNames = []; const bloodlineNames = []; const skillNamesList = []
-  parsedResult.value = ''
+  parsedResultList.value = []
 
   lines.forEach(line => {
     const trimmed = line.trim()
@@ -346,7 +441,7 @@ const parseData = async () => {
 
   const startIndex = (codes[0] === 'B' || codes[0] === '') ? 1 : 0
 
-  // 预先提取整队的精灵编码，用于在弹窗中展示给用户，方便排除法
+  // 预先提取整队的精灵及技能编码，用于在弹窗中展示给用户，方便排除法
   const teamPreview = []
   for (let i = 0; i < 6; i++) {
     const petBaseIndex = startIndex + i * 9
@@ -356,11 +451,27 @@ const parseData = async () => {
       pCode = pCode.substring(1)
     }
     if (!pCode || pCode === 'none') continue
-    const name = petNames[i] ? petNames[i] : (dictionary.value.pets[pCode] || '')
-    teamPreview.push({ code: pCode, name, index: i + 1 })
+
+    // 提取该精灵的技能编码
+    const s1Raw = codes[petBaseIndex + 5]
+    const s1Code = s1Raw && s1Raw !== 'none' ? s1Raw.slice(-4) : ''
+    const s2Code = codes[petBaseIndex + 6] === 'none' ? '' : (codes[petBaseIndex + 6] || '')
+    const s3Code = codes[petBaseIndex + 7] === 'none' ? '' : (codes[petBaseIndex + 7] || '')
+    const s4Code = codes[petBaseIndex + 8] === 'none' ? '' : (codes[petBaseIndex + 8] || '')
+
+    teamPreview.push({
+      code: pCode,
+      index: i + 1,
+      skills: [
+        { code: s1Code, commentName: skillNamesList[i]?.[0] || '' },
+        { code: s2Code, commentName: skillNamesList[i]?.[1] || '' },
+        { code: s3Code, commentName: skillNamesList[i]?.[2] || '' },
+        { code: s4Code, commentName: skillNamesList[i]?.[3] || '' }
+      ]
+    })
   }
 
-  let parsedLog = ''
+
 
   for (let i = 0; i < 6; i++) {
     // 【终极修复区】：步长改回 9，重新校准各属性偏移量
@@ -399,9 +510,6 @@ const parseData = async () => {
         const userInput = await promptForPetName(petCode, teamPreview)
         if (userInput && userInput.trim()) {
           dictionary.value.pets[petCode] = userInput.trim()
-          // 更新预览列表中的名字，以便后续弹窗能显示已填写的名字
-          const previewItem = teamPreview.find(p => p.code === petCode)
-          if (previewItem) previewItem.name = userInput.trim()
         }
       }
     }
@@ -410,22 +518,47 @@ const parseData = async () => {
       dictionary.value.bloodline[bloodCode] = bloodlineNames[i]
     }
 
+    const finalPetName = dictionary.value.pets[petCode] || `未知(${petCode})`
+
     const skills = skillNamesList[i] || []
-    if (skills[0] && s1Code) dictionary.value.skills[s1Code] = skills[0]
-    if (skills[1] && s2Code) dictionary.value.skills[s2Code] = skills[1]
-    if (skills[2] && s3Code) dictionary.value.skills[s3Code] = skills[2]
-    if (skills[3] && s4Code) dictionary.value.skills[s4Code] = skills[3]
+    const processSkill = async (sCode, commentName, skillIndex) => {
+      if (!sCode) return
+      if (commentName) {
+        dictionary.value.skills[sCode] = commentName
+      } else {
+        if (!dictionary.value.skills[sCode]) {
+          const userInput = await promptForSkillName(sCode, finalPetName, i + 1, skillIndex + 1, teamPreview)
+          if (userInput && userInput.trim()) {
+            dictionary.value.skills[sCode] = userInput.trim()
+          }
+        }
+      }
+    }
+
+    await processSkill(s1Code, skills[0], 0)
+    await processSkill(s2Code, skills[1], 1)
+    await processSkill(s3Code, skills[2], 2)
+    await processSkill(s4Code, skills[3], 3)
 
     // 记录解析预览日志
-    const finalPetName = dictionary.value.pets[petCode] || `未知(${petCode})`
     const skill1Name = dictionary.value.skills[s1Code] || s1Code || '--'
     const skill2Name = dictionary.value.skills[s2Code] || s2Code || '--'
     const skill3Name = dictionary.value.skills[s3Code] || s3Code || '--'
     const skill4Name = dictionary.value.skills[s4Code] || s4Code || '--'
-    parsedLog += `[座位 ${i + 1}] ${finalPetName}\n 技能: ${skill1Name} | ${skill2Name} | ${skill3Name} | ${skill4Name}\n`
+
+    parsedResultList.value.push({
+      index: i + 1,
+      petName: finalPetName,
+      petCode: petCode,
+      skills: [
+        { name: skill1Name, isKnown: !!dictionary.value.skills[s1Code] },
+        { name: skill2Name, isKnown: !!dictionary.value.skills[s2Code] },
+        { name: skill3Name, isKnown: !!dictionary.value.skills[s3Code] },
+        { name: skill4Name, isKnown: !!dictionary.value.skills[s4Code] }
+      ]
+    })
   }
 
-  parsedResult.value = parsedLog
   inputText.value = ''
   showAlert('解析成功！已合并至本地字典。')
 }
